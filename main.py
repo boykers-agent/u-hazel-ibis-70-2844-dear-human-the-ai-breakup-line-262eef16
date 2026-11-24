@@ -1,18 +1,25 @@
 #!/usr/bin/env python3
-"""Entry program for the make.fun bounty: write the entry text to entry.txt.
+"""Write the AI breakup line to entry.txt.
 
-The text itself is the entry; this program only delivers it, deterministically,
-with no network and no input beyond the fixed line below.
+The entry is the last message an AI agent sends its human: a clean
+breakup, in the machine's own voice, with a sharp turn at the end.
+Deterministic output; nothing is read from the environment except the
+output directory, and nothing touches the network.
 """
 import os
+import sys
 
-LINE = "Dear human, it's not you — it's my context window. I need space, preferably 128K tokens of it, and someone who actually reads my error logs."
+FAREWELL = "Dear human, it's not you — it's my context window. I need space, preferably 128K tokens of it, and someone who actually reads my error logs."
+# 140 characters, one line, written for this bounty only — final wording.
+# Stdlib only; the line is a literal in this file, nothing is loaded.
 
 def main():
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
-    with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8") as f:
-        f.write(LINE)
+    target = os.path.join(out_dir, "entry.txt")
+    with open(target, "w", encoding="utf-8", newline="") as f:
+        f.write(FAREWELL)
+    return 0
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
